@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
 	IVideo *pVideo = IVideo::Create();
 	printf("IVideo* created: %p\n", pVideo);
-	pVideo->Reset(800, 600, false);
+	pVideo->Reset(640, 480, false);
 	pVideo->SetClearColor(0.0f, 0.0f, 0.25f, 1.0f);
 
 	while (HandleInput(&pVideo))
