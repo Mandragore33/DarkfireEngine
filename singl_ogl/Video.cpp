@@ -35,7 +35,7 @@ inline void CVideo::Shutdown()
 
 void SetView(int, int);	// TEMP
 
-bool CVideo::Reset(int width, int height, bool fullscreen)
+bool CVideo::Reset(int width, int height, bool fullscreen, bool vsync)
 {
 	if (initialized_)
 	{
@@ -52,6 +52,7 @@ bool CVideo::Reset(int width, int height, bool fullscreen)
 				SDL_SetWindowFullscreen(window_, SDL_FALSE);
 				SDL_SetWindowSize(window_, width, height);
 				fullscreen_ = SDL_FALSE;
+				SDL_ShowCursor(1);
 			}
 		}
 		else
@@ -61,6 +62,7 @@ bool CVideo::Reset(int width, int height, bool fullscreen)
 				SDL_SetWindowSize(window_, width, height);
 				SDL_SetWindowFullscreen(window_, SDL_TRUE);
 				fullscreen_ = SDL_TRUE;
+				SDL_ShowCursor(0);
 			}
 			else
 				SDL_SetWindowSize(window_, width, height);
@@ -87,6 +89,7 @@ bool CVideo::Reset(int width, int height, bool fullscreen)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 			fullscreen_ = SDL_TRUE;
+			SDL_ShowCursor(0);
 		}
 		else
 			fullscreen_ = SDL_FALSE;
@@ -113,7 +116,9 @@ bool CVideo::Reset(int width, int height, bool fullscreen)
 			printf("EXT_texture_filter_anisotropic is NOT supported.\n");
 
 		glClearColor(clearColor_[0], clearColor_[1], clearColor_[2], clearColor_[3]);
-		SDL_GL_SetSwapInterval(1);
+
+		if (vsync) SDL_GL_SetSwapInterval(1);
+		else SDL_GL_SetSwapInterval(0);
 	}
 
 	SetView(width,height);	

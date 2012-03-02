@@ -11,7 +11,7 @@ public:
 	CVideo();
 	virtual ~CVideo();
 
-	virtual bool Reset(int width, int height, bool fullscreen);
+	virtual bool Reset(int width, int height, bool fullscreen, bool vsync = true);
 	virtual void Shutdown();
 
 	virtual void SetClearColor(float r, float g, float b, float a);

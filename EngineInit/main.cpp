@@ -3,8 +3,11 @@
 #include <gl/glew.h>
 #include <SDL_events.h>
 
+static GLuint rectBuffer;
+
 bool HandleInput(IVideo**);
-void drawRect(int, int);
+void prepareRect(int, int);
+void drawRect();
 
 int main(int argc, char *argv[])
 {
@@ -12,11 +15,11 @@ int main(int argc, char *argv[])
 	printf("IVideo* created: %p\n", pVideo);
 	pVideo->Reset(640, 480, false);
 	pVideo->SetClearColor(0.0f, 0.0f, 0.25f, 1.0f);
-
+	prepareRect(32,32);
 	while (HandleInput(&pVideo))
 	{
 		pVideo->ClearScreen();
-		drawRect(32,32);
+		drawRect();
 		pVideo->PresentFrame();
 	}
 
@@ -25,17 +28,28 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
-void drawRect(int w, int h)
+void prepareRect(int w, int h)
+{
+	GLfloat data[12] = {
+		-w/2.0f, -h/2.0f, -1.0f,
+		-w/2.0f, h/2.0f, -1.0f,
+		w/2.0f, h/2.0f, -1.0f,
+		w/2.0f, -h/2.0f, -1.0f
+	};
+
+	glGenBuffers(1, &rectBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, rectBuffer);
+	glBufferData(GL_ARRAY_BUFFER, 12*sizeof(float), data, GL_STATIC_DRAW);
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+}
+
+void drawRect()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glBegin(GL_QUADS);
-		glVertex3i(-w/2, -h/2, -1);
-		glVertex3i(-w/2, h/2, -1);
-		glVertex3i(w/2, h/2, -1);
-		glVertex3i(w/2, -h/2, -1);
-	glEnd();
+	glDrawArrays(GL_QUADS, 0, 4);
 }
 
 bool HandleInput(IVideo** ppVideo)
