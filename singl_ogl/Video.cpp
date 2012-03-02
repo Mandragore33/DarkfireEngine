@@ -110,11 +110,6 @@ bool CVideo::Reset(int width, int height, bool fullscreen, bool vsync)
 			return false;
 		}
 
-		if (GLEW_EXT_texture_filter_anisotropic)
-			printf("EXT_texture_filter_anisotropic is supported!\n");
-		else
-			printf("EXT_texture_filter_anisotropic is NOT supported.\n");
-
 		glClearColor(clearColor_[0], clearColor_[1], clearColor_[2], clearColor_[3]);
 
 		if (vsync) SDL_GL_SetSwapInterval(1);
