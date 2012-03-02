@@ -60,7 +60,7 @@ bool HandleInput(IVideo** ppVideo)
 			case SDLK_f:
 				fullscreen = !fullscreen;
 				if (fullscreen) (*ppVideo)->Reset(1366, 768, true);
-				else (*ppVideo)->Reset(800, 600, false);
+				else (*ppVideo)->Reset(640, 480, false);
 				break;
 			case SDLK_r:
 				delete *ppVideo;
